@@ -2,21 +2,24 @@ const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const  cors = require('cors')
+
 const app = express()
 const port = 3030;
 
 app.use(cors())
 app.use(require('body-parser').urlencoded({ extended: false }));
 
+// load seed data
 const reviews_data = JSON.parse(fs.readFileSync("reviews.json", 'utf8'));
 const dealerships_data = JSON.parse(fs.readFileSync("dealerships.json", 'utf8'));
 
+// models
 mongoose.connect("mongodb://mongo_db:27017/",{'dbName':'dealershipsDB'});
-
 
 const Reviews = require('./review');
 
 const Dealerships = require('./dealership');
+const dealership = require('./dealership');
 
 try {
   Reviews.deleteMany({}).then(()=>{
@@ -58,17 +61,40 @@ app.get('/fetchReviews/dealer/:id', async (req, res) => {
 
 // Express route to fetch all dealerships
 app.get('/fetchDealers', async (req, res) => {
-//Write your code here
+  try {
+    const docs = await Dealerships.find();
+    res.status(200).json((docs));
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching dealeships' });
+  }
 });
 
 // Express route to fetch Dealers by a particular state
 app.get('/fetchDealers/:state', async (req, res) => {
-//Write your code here
+  try {
+    // get state
+    const state = req.params.state;
+    // filter
+    const filtered_dealerships = await Dealerships.find({ state });
+    res.status(200).json(filtered_dealerships);
+  } catch (error) {
+      res.status(500).json({ error: 'Error fetching dealerships' });
+  }
 });
 
 // Express route to fetch dealer by a particular id
 app.get('/fetchDealer/:id', async (req, res) => {
-//Write your code here
+  try {
+    // get id
+    const id = Number(req.params.id);
+    // filter
+    const dealer = await Dealerships.find({ id });
+    if (!dealer) return res.status(404).json({ error: 'Dealer not found' });
+    res.status(200).json(dealer);
+
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching dealer' });
+  }
 });
 
 //Express route to insert review
