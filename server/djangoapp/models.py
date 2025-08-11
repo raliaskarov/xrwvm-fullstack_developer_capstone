@@ -1,12 +1,32 @@
-# Uncomment the following imports before adding the Model code
+# server/djangoapp/models.py
 
-# from django.db import models
-# from django.utils.timezone import now
-# from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.utils.timezone import now
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
 
+# car make model
+class CarMake(models.Model):
+
+    MAKER_CHOICES = [
+        (CHRYSLER: 'Chrysler'),
+        (MERCEDES: 'MERCEDES'),
+        (FORD: 'FORD'),
+        (VOLVO: 'Volvo'),
+        (GEELY: 'Geely')
+        ]
+
+    maker_name = models.CharField(null=False,
+                    max_length=200,
+                    default='not_selected',
+                    choices=MAKER_CHOICES)
+
+    description = models.CharField(null=True, max_length=200)
+
+    def __str__(self):
+        return self.
 # <HINT> Create a Car Make model `class CarMake(models.Model)`:
 # - Name
 # - Description
