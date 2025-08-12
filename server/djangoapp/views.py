@@ -107,8 +107,9 @@ def get_dealerships(request, state="All"):
 def get_dealer_details(request,dealer_id):
     if(dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
-        details = get_request(endpoint)
-        return JsonResponse({"status":200,"details":details})
+        details = get_request(endpoint) or []
+        dealer = details[0] if isinstance(details, list) and details else details
+        return JsonResponse({"status": 200, "dealer": dealer or {}}, safe=False)
     else:
         return JsonResponse({"status":400,"message":"Bad Request"})
 

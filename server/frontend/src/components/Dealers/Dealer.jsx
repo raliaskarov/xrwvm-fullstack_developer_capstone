@@ -15,41 +15,32 @@ const Dealer = () => {
   const [dealer, setDealer] = useState({});
   const [reviews, setReviews] = useState([]);
   const [unreviewed, setUnreviewed] = useState(false);
-  const [postReview, setPostReview] = useState(<></>)
+  const [postReview, setPostReview] = useState(<></>);
+  const { id } = useParams();
 
-  let curr_url = window.location.href;
-  let root_url = curr_url.substring(0,curr_url.indexOf("dealer"));
-  let params = useParams();
-  let id =params.id;
-  let dealer_url = root_url+`/djangoapp/dealer/${id}`;
-  let reviews_url = root_url+`/djangoapp/reviews/dealer/${id}`;
-  let post_review = root_url+`postreview/${id}`;
+  const dealer_url = `/djangoapp/dealer/${id}`;
+  const reviews_url = `/djangoapp/reviews/dealer/${id}`;
+  const post_review = `postreview/${id}`;
   
   const get_dealer = async ()=>{
-    const res = await fetch(dealer_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
+    const res = await fetch(dealer_url);
+    const data = await res.json();
     
-    if(retobj.status === 200) {
-      setDealer(retobj.dealer)
+    if(data.status === 200) {
+      setDealer(data.dealer)
     }
   }
 
   const get_reviews = async ()=>{
-    const res = await fetch(reviews_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
+    const res = await fetch(reviews_url);
+    const data = await res.json();
     
-    if(retobj.status === 200) {
-      if(retobj.reviews.length > 0){
-        setReviews(retobj.reviews)
-      } else {
-        setUnreviewed(true);
-      }
+    if(data.status === 200) {
+        const list = Array.from(data.reviews || []);
+      if(list.length > 0) setReviews(list);
+      else setUnreviewed(true);
     }
-  }
+  };
 
   const senti_icon = (sentiment)=>{
     let icon = sentiment === "positive"?positive_icon:sentiment==="negative"?negative_icon:neutral_icon;
@@ -64,7 +55,7 @@ const Dealer = () => {
 
       
     }
-  },[]);  
+  },[id]);  
 
 
 return(
