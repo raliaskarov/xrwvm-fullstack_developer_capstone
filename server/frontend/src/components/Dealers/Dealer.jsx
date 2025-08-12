@@ -20,7 +20,7 @@ const Dealer = () => {
 
   const dealer_url = `/djangoapp/dealer/${id}`;
   const reviews_url = `/djangoapp/reviews/dealer/${id}`;
-  const post_review = `postreview/${id}`;
+  const post_review = `/postreview/${id}`;
   
   const get_dealer = async ()=>{
     const res = await fetch(dealer_url);
