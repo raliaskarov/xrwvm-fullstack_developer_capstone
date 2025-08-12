@@ -17,8 +17,8 @@ const PostReview = () => {
   let params = useParams();
   let id =params.id;
   const dealer_url = `/djangoapp/dealer/${id}`;
-  const review_url = `/djangoapp/add_review`;
-  const carmodels_url =`/djangoapp/get_cars`;
+  const review_url = `/djangoapp/add_review/`;
+  const carmodels_url =`/djangoapp/get_cars/`;
 
   const postreview = async ()=>{
     let name = sessionStorage.getItem("firstname")+" "+sessionStorage.getItem("lastname");
