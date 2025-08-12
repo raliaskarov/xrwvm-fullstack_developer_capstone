@@ -115,7 +115,7 @@ def get_dealer_details(request,dealer_id):
 # GET dealer reviews
 def get_dealer_reviews(request,dealer_id):
     if(dealer_id):
-        enpoint ="fetchReviews/dealer/"+dealer_id
+        endpoint ="fetchReviews/dealer/"+dealer_id
         reviews = get_request(endpoint)
         for review_detail in reviews:
             response = analyze_review_sentiments(review_detail['review'])
