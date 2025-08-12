@@ -6,42 +6,29 @@ import review_icon from "../assets/reviewicon.png"
 
 const Dealers = () => {
   const [dealersList, setDealersList] = useState([]);
-  // let [state, setState] = useState("")
-  let [states, setStates] = useState([])
+  const [states, setStates] = useState([]);
+  const [selectedState, setSelectedState] = useState([]);
 
   // let root_url = window.location.origin
-  let dealer_url ="/djangoapp/get_dealers";
+  const ALL_DEALERS_URL ="/djangoapp/get_dealers";
   
-  let dealer_url_by_state = "/djangoapp/get_dealers/";
- 
   const filterDealers = async (state) => {
-    dealer_url_by_state = dealer_url_by_state+state;
-    const res = await fetch(dealer_url_by_state, {
-      method: "GET"
-    });
-    const retobj = await res.json();
-    if(retobj.status === 200) {
-      let state_dealers = Array.from(retobj.dealers)
-      setDealersList(state_dealers)
-    }
+    const url = state && state !== "All"
+        ? 
   }
 
   const get_dealers = async ()=>{
-    const res = await fetch(dealer_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
-    if(retobj.status === 200) {
-      let all_dealers = Array.from(retobj.dealers)
-      let states = [];
-      all_dealers.forEach((dealer)=>{
-        states.push(dealer.state)
-      });
-
-      setStates(Array.from(new Set(states)))
-      setDealersList(all_dealers)
+    const res = await fetch(ALL_DEALERS_URL);
+    const data = await re.json();
+    if(data.status === 200) {
+      const all_dealers = Array.from(retobj.dealers || []);
+      setDealersList(all)
+      // unique sorted list of states
+      const uniqueStates = Array.from(new Set(all_dealers.map(d => d.state))).sort();
+      setStates(uniqueStates);
     }
-  }
+  };
+
   useEffect(() => {
     get_dealers();
   },[]);  
