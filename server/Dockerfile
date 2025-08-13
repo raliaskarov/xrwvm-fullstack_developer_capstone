@@ -20,6 +20,6 @@
 
     RUN chmod +x /app/entrypoint.sh
 
-    ENTRYPOINT ["/bin/bash","/app/entrypoint.sh"]
+    ENTRYPOINT ["/bin/sh","/app/entrypoint.sh"]
 
     CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "djangoproj.wsgi"]
