@@ -1,6 +1,5 @@
 # server/djangoapp/views.py
 
-from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from .models import CarMake, CarModel
@@ -107,19 +106,20 @@ def get_dealerships(request, state="All"):
 
 
 # GET dealer details
-def get_dealer_details(request,dealer_id):
+def get_dealer_details(request, dealer_id):
     if (dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
         details = get_request(endpoint) or []
         dealer = details[0] if isinstance(details, list) and details else details
         return JsonResponse({"status": 200, "dealer": dealer or {}}, safe=False)
     else:
-        return JsonResponse({"status":400,"message":"Bad Request"})
+        return JsonResponse({"status": 400, "message": "Bad Request"})
+
 
 # GET dealer reviews
-def get_dealer_reviews(request,dealer_id):
-    if(dealer_id):
-        endpoint ="/fetchReviews/dealer/"+str(dealer_id)
+def get_dealer_reviews(request, dealer_id):
+    if (dealer_id):
+        endpoint = "/fetchReviews/dealer/"+str(dealer_id)
         reviews = get_request(endpoint) or []
         for review_detail in reviews:
             text = review_detail.get("review", "")
@@ -140,10 +140,9 @@ def get_dealer_reviews(request,dealer_id):
 def add_review(request):
     if not request.user.is_anonymous:
         data = json.loads(request.body)
-        try:
-            post_review(data)
-            return JsonResponse({"status": 200})
-        except:
-            return JsonResponse({"status": 401,"message":"Error in posting review"})
+        result = post_review(data)
+        if result is None:
+            return JsonResponse({"status": 401, "message": "Error in posting review"})
+        return JsonResponse({"status": 200})
     else:
-        return JsonResponse({"status": 403,"message":"Unauthorized"})
+        return JsonResponse({"status": 403, "message": "Unauthorized"})
