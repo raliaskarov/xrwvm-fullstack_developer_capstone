@@ -1,0 +1,14 @@
+{
+  "esversion": 8,          // allow ES6+ and async/await
+  "node": true,            // Node globals (require, module, process)
+  "strict": "implied",     // treat files as strict without "use strict"
+  "undef": true,           // error on undefined variables
+  "unused": true,          // error on declared-but-unused vars
+  "asi": false,            // enforce semicolons (you’ll add the missing ones)
+  "sub": false,            // warn on obj['prop'] when obj.prop would work
+  "eqeqeq": true,          // require === / !==
+  "curly": true,           // require braces around blocks
+  "latedef": "nofunc",     // disallow using variables before definition (functions allowed)
+  "freeze": true,          // disallow overwriting native prototypes
+  "noyield": false         // allow generators if you ever use them
+}
