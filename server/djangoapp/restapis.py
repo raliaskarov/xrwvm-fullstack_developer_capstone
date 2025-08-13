@@ -69,9 +69,9 @@ def analyze_review_sentiments(text: str):
         resp.raise_for_status()
         data = resp.json() if resp.content else {}
         return {
-            "sentiment":( 
-                data.get("sentiment") 
-                or data.get("label") 
+            "sentiment":(
+                data.get("sentiment")
+                or data.get("label")
                 or "neutral"
             ),
             "confidence": data.get("confidence", 0),
