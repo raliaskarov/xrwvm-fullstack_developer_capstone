@@ -21,6 +21,7 @@ SENTIMENT_URL = (
     or ""  # empty => disabled/fallback to neutral
 )
 
+
 def _join(base: str, endpoint: str) -> str:
     """Slash-safe join of base + endpoint."""
     if not base:
@@ -29,6 +30,7 @@ def _join(base: str, endpoint: str) -> str:
     if not base.endswith("/"):
         base = base + "/"
     return urljoin(base, endpoint.lstrip("/"))
+
 
 def get_request(endpoint: str, **kwargs):
     """
@@ -51,6 +53,7 @@ def get_request(endpoint: str, **kwargs):
         print("Network exception occurred", e)
         return None
 
+
 def analyze_review_sentiments(text: str):
     """
     Optional sentiment analyzer. If SENTIMENT_URL is not set or the service
@@ -66,12 +69,17 @@ def analyze_review_sentiments(text: str):
         resp.raise_for_status()
         data = resp.json() if resp.content else {}
         return {
-            "sentiment": data.get("sentiment") or data.get("label") or "neutral",
+            "sentiment":( 
+                data.get("sentiment") 
+                or data.get("label") 
+                or "neutral"
+            ),
             "confidence": data.get("confidence", 0),
         }
     except Exception as e:
         logger.warning("Sentiment service failed: %s", e)
         return {"sentiment": "neutral", "confidence": 0, "reason": "fallback"}
+
 
 def post_review(data_dict: dict):
     url = _join(BACKEND_URL, "/insert_review")
